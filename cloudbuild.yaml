@@ -26,8 +26,9 @@ steps:
         mkdir -p backend/public
         cp -r frontend/dist/* backend/public/
 
-  # 4️⃣ Deploy to Cloud Run
+  # 4️⃣ Deploy to Cloud Run (FIXED)
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
     args:
       [
         'run', 'deploy', 'susie-jetta',
@@ -38,4 +39,5 @@ steps:
 
 options:
   logging: GCS_ONLY
+
 logsBucket: "gs://susie-jetta-build-logs"
