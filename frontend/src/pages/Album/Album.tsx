@@ -17,7 +17,6 @@ interface AlbumProps {
 }
 
 const Album: React.FC<AlbumProps> = ({ albumName }) => {
-  const apiUrl = import.meta.env.VITE_API_BASE || '';
   const [dataSize, setDataSize] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [more, setMore] = useState(true);
