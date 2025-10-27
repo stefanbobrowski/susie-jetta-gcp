@@ -1,19 +1,23 @@
 steps:
-  # 1️⃣ Build the frontend
-  - name: 'gcr.io/cloud-builders/npm'
+  # 1️⃣ Build the frontend with Node 22
+  - name: 'node:22.14'
+    entrypoint: npm
     args: ['ci']
     dir: 'frontend'
 
-  - name: 'gcr.io/cloud-builders/npm'
+  - name: 'node:22.14'
+    entrypoint: npm
     args: ['run', 'build']
     dir: 'frontend'
 
-  # 2️⃣ Build the backend
-  - name: 'gcr.io/cloud-builders/npm'
+  # 2️⃣ Build the backend (Node 22 as well)
+  - name: 'node:22.14'
+    entrypoint: npm
     args: ['ci']
     dir: 'backend'
 
-  - name: 'gcr.io/cloud-builders/npm'
+  - name: 'node:22.14'
+    entrypoint: npm
     args: ['run', 'build']
     dir: 'backend'
 
@@ -26,7 +30,7 @@ steps:
         mkdir -p backend/public
         cp -r frontend/dist/* backend/public/
 
-  # 4️⃣ Deploy to Cloud Run (FIXED)
+  # 4️⃣ Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
