@@ -1,5 +1,5 @@
 steps:
-  # 1️⃣ Build the frontend with Node 22
+  # 1️⃣ Build frontend with Node 22
   - name: 'node:22.14'
     entrypoint: npm
     args: ['ci']
@@ -10,7 +10,7 @@ steps:
     args: ['run', 'build']
     dir: 'frontend'
 
-  # 2️⃣ Build the backend (Node 22 as well)
+  # 2️⃣ Build backend with Node 22
   - name: 'node:22.14'
     entrypoint: npm
     args: ['ci']
@@ -21,7 +21,7 @@ steps:
     args: ['run', 'build']
     dir: 'backend'
 
-  # 3️⃣ Copy frontend output into backend/public
+  # 3️⃣ Copy frontend build output into backend/public
   - name: 'ubuntu'
     entrypoint: 'bash'
     args:
@@ -30,13 +30,13 @@ steps:
         mkdir -p backend/public
         cp -r frontend/dist/* backend/public/
 
-  # 4️⃣ Deploy to Cloud Run
+  # 4️⃣ Deploy prebuilt backend directly (no rebuild)
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
       [
         'run', 'deploy', 'susie-jetta',
-        '--source', 'backend',
+        '--source', 'backend/.',           # deploy compiled backend directly
         '--region', 'us-central1',
         '--allow-unauthenticated'
       ]

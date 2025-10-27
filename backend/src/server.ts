@@ -2,6 +2,8 @@
 import express from 'express';
 import cors from 'cors';
 import { Storage } from '@google-cloud/storage';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -18,7 +20,6 @@ const bucketName = 'susie-jetta-photos';
 app.get('/photos', async (req, res) => {
   try {
     const album = req.query.album as string;
-
     if (!album) {
       return res.status(400).json({ error: 'Missing album query (I, II, or III)' });
     }
@@ -26,11 +27,10 @@ app.get('/photos', async (req, res) => {
     const prefix = `albums/${album}/`;
     const [files] = await storage.bucket(bucketName).getFiles({ prefix });
 
-    // Filter out any folder entries and return just filenames
     const photos = files
       .filter((f) => !f.name.endsWith('/'))
       .map((f) => ({
-        name: f.name.replace(prefix, ''), // e.g. "IMG_123.jpg"
+        name: f.name.replace(prefix, ''),
         url: `https://storage.googleapis.com/${bucketName}/${f.name}`,
       }));
 
@@ -39,6 +39,22 @@ app.get('/photos', async (req, res) => {
     console.error('Error listing photos:', err);
     res.status(500).json({ error: 'Failed to fetch photos' });
   }
+});
+
+// ============================
+// ✅ Serve Frontend Build
+// ============================
+
+// These two lines make __dirname work in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static React build (copied into backend/public)
+app.use(express.static(path.join(__dirname, '../public')));
+
+// React Router fallback for all other routes
+app.get('*', (_, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 app.listen(port, () => {
