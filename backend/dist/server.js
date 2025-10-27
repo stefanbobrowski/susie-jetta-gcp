@@ -2,6 +2,8 @@
 import express from 'express';
 import cors from 'cors';
 import { Storage } from '@google-cloud/storage';
+import path from 'path';
+import { fileURLToPath } from 'url';
 const app = express();
 const port = process.env.PORT || 8080;
 // Middleware
@@ -19,11 +21,10 @@ app.get('/photos', async (req, res) => {
         }
         const prefix = `albums/${album}/`;
         const [files] = await storage.bucket(bucketName).getFiles({ prefix });
-        // Filter out any folder entries and return just filenames
         const photos = files
             .filter((f) => !f.name.endsWith('/'))
             .map((f) => ({
-            name: f.name.replace(prefix, ''), // e.g. "IMG_123.jpg"
+            name: f.name.replace(prefix, ''),
             url: `https://storage.googleapis.com/${bucketName}/${f.name}`,
         }));
         res.json({ album, photos });
@@ -32,6 +33,18 @@ app.get('/photos', async (req, res) => {
         console.error('Error listing photos:', err);
         res.status(500).json({ error: 'Failed to fetch photos' });
     }
+});
+// ============================
+// ✅ Serve Frontend Build
+// ============================
+// These two lines make __dirname work in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// Serve static frontend
+app.use(express.static(path.join(__dirname, '../public')));
+// React Router fallback (regex avoids Express 5 bug)
+app.get(/.*/, (_, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 app.listen(port, () => {
     console.log(`✅ Server running on http://localhost:${port}`);

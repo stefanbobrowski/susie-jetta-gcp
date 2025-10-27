@@ -49,11 +49,11 @@ app.get('/photos', async (req, res) => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static React build (copied into backend/public)
+// Serve static frontend
 app.use(express.static(path.join(__dirname, '../public')));
 
-// React Router fallback for all other routes
-app.get('*', (_, res) => {
+// React Router fallback (regex avoids Express 5 bug)
+app.get(/.*/, (_, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
