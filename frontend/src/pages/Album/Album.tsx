@@ -17,8 +17,7 @@ interface AlbumProps {
 }
 
 const Album: React.FC<AlbumProps> = ({ albumName }) => {
-  const apiUrl = import.meta.env.VITE_API_BASE || 'http://localhost:8080';
-
+  const apiUrl = import.meta.env.VITE_API_BASE || '';
   const [dataSize, setDataSize] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [more, setMore] = useState(true);
@@ -45,7 +44,7 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
 
   const fetchAlbum = async () => {
     try {
-      const response = await fetch(`${apiUrl}/photos?album=${albumName}`);
+      const response = await fetch(`/photos?album=${albumName}`);
       const res = await response.json();
       setPhotoAlbum(res.photos || []);
     } catch (err: any) {
