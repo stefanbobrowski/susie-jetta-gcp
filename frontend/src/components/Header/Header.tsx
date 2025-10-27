@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
-import instagram from "../../assets/icons/instagram.svg";
-import youTube from "../../assets/icons/youtube.svg";
-import "./Header.scss";
+import instagram from '../../assets/icons/instagram.svg';
+import youTube from '../../assets/icons/youtube.svg';
+import './Header.scss';
 
 const Header: React.FC = () => {
-  const navigate = useNavigate();
+  const location = useLocation();
   const [showMobileNav, setShowMobileNav] = useState(false);
 
   // Close nav when window resizes above mobile width
@@ -14,21 +14,18 @@ const Header: React.FC = () => {
     const resizeListener = () => {
       if (window.innerWidth > 767) setShowMobileNav(false);
     };
-    window.addEventListener("resize", resizeListener);
-    return () => window.removeEventListener("resize", resizeListener);
+    window.addEventListener('resize', resizeListener);
+    return () => window.removeEventListener('resize', resizeListener);
   }, []);
 
-  // Close nav on route change
-  // useEffect(() => {
-  //   const unlisten = navigate((location) => {
-  //     setShowMobileNav(false);
-  //   });
-  //   return unlisten;
-  // }, [navigate]);
+  // Close mobile nav on route change
+  useEffect(() => {
+    setShowMobileNav(false);
+  }, [location]);
 
   // Disable background scroll when mobile nav open
   useEffect(() => {
-    document.body.style.overflowY = showMobileNav ? "hidden" : "auto";
+    document.body.style.overflowY = showMobileNav ? 'hidden' : 'auto';
   }, [showMobileNav]);
 
   return (
@@ -39,48 +36,35 @@ const Header: React.FC = () => {
 
       {/* Desktop Navigation */}
       <nav className="desktop-nav">
-        {["I", "II", "III"].map((album) => (
+        {['I', 'II', 'III'].map((album) => (
           <NavLink
             key={album}
             to={`/${album}`}
             end
-            className={({ isActive }) =>
-              `nav-link ${isActive ? "is-active" : ""}`
-            }
+            className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
           >
-            {album === "III" ? "denn boca" : album}
+            {album === 'III' ? 'denn boca' : album}
           </NavLink>
         ))}
 
-        <NavLink
-          to="/book"
-          className={({ isActive }) =>
-            `nav-link ${isActive ? "is-active" : ""}`
-          }
-        >
+        <NavLink to="/book" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
           book now
         </NavLink>
         <NavLink
           to="/packages"
-          className={({ isActive }) =>
-            `nav-link ${isActive ? "is-active" : ""}`
-          }
+          className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
         >
           packages
         </NavLink>
         <NavLink
           to="/about"
-          className={({ isActive }) =>
-            `nav-link ${isActive ? "is-active" : ""}`
-          }
+          className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
         >
           about
         </NavLink>
         <NavLink
           to="/contact"
-          className={({ isActive }) =>
-            `nav-link ${isActive ? "is-active" : ""}`
-          }
+          className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
         >
           contact
         </NavLink>
@@ -103,7 +87,7 @@ const Header: React.FC = () => {
         </a>
 
         <button
-          className={`mobile-nav-button ${showMobileNav ? "close" : "open"}`}
+          className={`mobile-nav-button ${showMobileNav ? 'close' : 'open'}`}
           onClick={() => setShowMobileNav(!showMobileNav)}
         >
           <div className="line-1"></div>
@@ -112,46 +96,28 @@ const Header: React.FC = () => {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className={`mobile-nav ${showMobileNav ? "show" : ""}`}>
-        {["I", "II", "III"].map((album) => (
+      <nav className={`mobile-nav ${showMobileNav ? 'show' : ''}`}>
+        {['I', 'II', 'III'].map((album) => (
           <NavLink
             key={album}
             to={`/${album}`}
             end
-            className={({ isActive }) =>
-              `nav-link ${isActive ? "is-active" : ""}`
-            }
+            className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
             onClick={() => setShowMobileNav(false)}
           >
-            {album === "III" ? "denn boca" : album}
+            {album === 'III' ? 'denn boca' : album}
           </NavLink>
         ))}
-        <NavLink
-          to="/book"
-          className="nav-link"
-          onClick={() => setShowMobileNav(false)}
-        >
+        <NavLink to="/book" className="nav-link" onClick={() => setShowMobileNav(false)}>
           book now
         </NavLink>
-        <NavLink
-          to="/packages"
-          className="nav-link"
-          onClick={() => setShowMobileNav(false)}
-        >
+        <NavLink to="/packages" className="nav-link" onClick={() => setShowMobileNav(false)}>
           packages
         </NavLink>
-        <NavLink
-          to="/about"
-          className="nav-link"
-          onClick={() => setShowMobileNav(false)}
-        >
+        <NavLink to="/about" className="nav-link" onClick={() => setShowMobileNav(false)}>
           about
         </NavLink>
-        <NavLink
-          to="/contact"
-          className="nav-link"
-          onClick={() => setShowMobileNav(false)}
-        >
+        <NavLink to="/contact" className="nav-link" onClick={() => setShowMobileNav(false)}>
           contact
         </NavLink>
 
