@@ -1,20 +1,26 @@
-import { useEffect, useState } from "react";
-import "./App.css";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Header from './components/Header/Header';
+import Album from './pages/Album/Album';
+import About from './pages/About/About';
+import Book from './pages/Book/Book';
+import Packages from './pages/Packages/Packages';
+import Contact from './pages/Contact/Contact';
+import './styles/App.scss';
 
 export default function App() {
-  const [message, setMessage] = useState("Loading...");
-
-  useEffect(() => {
-    fetch("/api/hello")
-      .then((r) => r.json())
-      .then((d) => setMessage(d.message))
-      .catch(() => setMessage("Error connecting to backend"));
-  }, []);
-
   return (
-    <main className="app">
-      <h1>Susie Jetta ✨</h1>
-      <p>{message}</p>
-    </main>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Album albumName="I" />} />
+        <Route path="/I" element={<Album albumName="I" />} />
+        <Route path="/II" element={<Album albumName="II" />} />
+        <Route path="/III" element={<Album albumName="III" />} />
+        <Route path="/book" element={<Book />} />
+        <Route path="/packages" element={<Packages />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

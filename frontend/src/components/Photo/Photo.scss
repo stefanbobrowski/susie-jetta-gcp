@@ -1,0 +1,28 @@
+.photo {
+  display: block;
+  width: 100%;
+  position: relative;
+  opacity: 0;
+  transform: translateY(80px);
+  will-change: opacity, transform; // GPU hint
+
+  &.loaded.visible {
+    animation: slideup 0.8s ease-out forwards;
+  }
+
+  @keyframes slideup {
+    from {
+      opacity: 0;
+      transform: translateY(80px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}

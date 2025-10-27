@@ -1,0 +1,37 @@
+@use '../../styles/variables' as vars;
+
+.page.about {
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .denn-boca-logo {
+    img {
+      margin: 1.5rem auto;
+    }
+  }
+}
+
+.about-container {
+  max-width: 710px;
+
+  h2 {
+    text-align: center;
+    font-weight: normal;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    color: vars.$theme-color;
+  }
+
+  p {
+    line-height: 2rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.logo-container {
+  width: 200px;
+  margin: 0 auto;
+}

@@ -1,0 +1,30 @@
+@use './reset' as *;
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Comfortaa', cursive;
+  // font-family: 'Cutive Mono', monospace;
+  color: #000;
+}
+
+.page {
+  position: relative;
+  padding: 3vw;
+}
+
+.instagram,
+.youtube {
+  display: block;
+  // width: 20px;
+}
+
+.error {
+  color: red;
+}
+
+p,
+li {
+  font-size: 1rem;
+}
