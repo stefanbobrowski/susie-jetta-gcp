@@ -27,17 +27,20 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
   const [shuffled, setShuffled] = useState<PhotoItem[]>([]);
   const [, setLastIndex] = useState(0);
 
-  // Shuffle helper
   const shufflePhotos = (arr: PhotoItem[]): PhotoItem[] => {
-    const shuffledDeck = [...arr];
-    for (let i = 0; i < shuffledDeck.length; i++) {
+    // Split out the top4 photos
+    const top4 = arr
+      .filter((p) => /^top[1-4]\.jpg$/i.test(p.name))
+      .sort((a, b) => a.name.localeCompare(b.name)); // ensures top1–top4 order
+
+    // Shuffle the remaining photos
+    const others = arr.filter((p) => !/^top[1-4]\.jpg$/i.test(p.name));
+    for (let i = others.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
+      [others[i], others[j]] = [others[j], others[i]];
     }
 
-    const top4 = shuffledDeck.filter((p) => /^top[1-4]\.jpg$/i.test(p.name));
-    const others = shuffledDeck.filter((p) => !/^top[1-4]\.jpg$/i.test(p.name));
-
+    // Combine: top4 always first, others random
     return [...top4, ...others];
   };
 
