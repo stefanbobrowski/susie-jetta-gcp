@@ -1,7 +1,10 @@
 {
-  "name": "frontend",
+  "name": "susie-jetta-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Susie Jetta Make Up and Photography",
+  "author": "Stefan Bobrowski",
+  "homepage": "https://susie-jetta.com",
   "type": "module",
   "scripts": {
     "dev": "vite",

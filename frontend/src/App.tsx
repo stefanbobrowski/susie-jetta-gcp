@@ -7,6 +7,11 @@ import Packages from './pages/Packages/Packages';
 import Contact from './pages/Contact/Contact';
 import './styles/App.scss';
 
+window.onbeforeunload = function () {
+  // Set scroll to top on refresh
+  window.scrollTo(0, 0);
+};
+
 export default function App() {
   return (
     <BrowserRouter>

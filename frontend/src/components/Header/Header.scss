@@ -8,7 +8,8 @@ header {
   align-items: center;
   flex-wrap: wrap;
   padding: 0vw 3vw 0vw 3vw;
-  height: 50px;
+  margin: 1vw 0;
+  // height: 50px;
 
   @media screen and (max-width: 767px) {
     height: 80px;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import TrackVisibility from 'react-on-screen';
 
@@ -41,40 +41,56 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
     return [...top4, ...others];
   };
 
-  const fetchAlbum = async () => {
+  const fetchAlbum = useCallback(async () => {
     try {
-      const response = await fetch(`/photos?album=${albumName}`);
+      const response = await fetch(`/api/photos?album=${albumName}`);
       const res = await response.json();
       setPhotoAlbum(res.photos || []);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('FETCH PHOTOS ERROR:', err);
-      setErrorMsg(err.message || 'Failed to load photos');
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg('Failed to load photos');
+      }
     }
-  };
+  }, [albumName]);
 
-  const fetchPhotos = (page: number, pageSize: number) => {
-    const nextPhotos = shuffled.slice(lastIndex, lastIndex + pageSize);
-    if (nextPhotos.length > 0) {
-      setDataSize((prev) => prev + nextPhotos.length);
-      const newCols = [...photoCols];
-      nextPhotos.forEach((photo, idx) => {
-        newCols[idx % 2].push(photo);
+  const fetchPhotos = useCallback(
+    (page: number, pageSize: number) => {
+      setLastIndex((prevLastIndex) => {
+        const nextPhotos = shuffled.slice(prevLastIndex, prevLastIndex + pageSize);
+        if (nextPhotos.length === 0) {
+          setMore(false);
+          return prevLastIndex;
+        }
+
+        setDataSize((prev) => prev + nextPhotos.length);
+        setPhotoCols((prevCols) => {
+          const newCols = [...prevCols];
+          nextPhotos.forEach((photo, idx) => {
+            // Prevent duplicates — check if the photo is already in the column
+            if (!newCols[idx % 2].some((p) => p.url === photo.url)) {
+              newCols[idx % 2].push(photo);
+            }
+          });
+          return newCols;
+        });
+
+        setCurrentPage(page);
+        return prevLastIndex + pageSize;
       });
-      setPhotoCols(newCols);
-      setCurrentPage(page);
-      setLastIndex((prev) => prev + pageSize);
-    } else {
-      setMore(false);
-    }
-  };
+    },
+    [shuffled]
+  );
 
-  const checkScrollTop = () => setShowScroll(window.pageYOffset > 400);
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   // Effects
   useEffect(() => {
-    window.addEventListener('scroll', checkScrollTop);
-    return () => window.removeEventListener('scroll', checkScrollTop);
+    const onScroll = () => setShowScroll(window.scrollY > 400);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -85,17 +101,19 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
     setShuffled([]);
     setLastIndex(0);
     fetchAlbum();
-  }, [albumName]);
+  }, [albumName, fetchAlbum]);
 
   useEffect(() => {
-    if (photoAlbum.length && !shuffled.length) {
-      setShuffled(shufflePhotos(photoAlbum));
+    if (photoAlbum.length) {
+      setShuffled((prev) => (prev.length ? prev : shufflePhotos(photoAlbum)));
     }
   }, [photoAlbum]);
 
   useEffect(() => {
-    if (shuffled.length) fetchPhotos(1, 4);
-  }, [shuffled]);
+    if (shuffled.length && dataSize === 0) {
+      fetchPhotos(1, 4);
+    }
+  }, [shuffled, fetchPhotos, dataSize]);
 
   return (
     <div className="page album">
@@ -120,7 +138,7 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
             <img src={logo} alt="Susie Jetta" />
           </div>
         }
-        loader={true}
+        loader={<p>Loading...</p>}
       >
         <div className="photo-album col-2">
           {photoCols.map((photoCol, i) => (

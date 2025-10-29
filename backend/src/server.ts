@@ -17,7 +17,7 @@ const storage = new Storage();
 const bucketName = 'susie-jetta-photos';
 
 // List photos by album
-app.get('/photos', async (req, res) => {
+app.get('/api/photos', async (req, res) => {
   try {
     const album = req.query.album as string;
     if (!album) {
@@ -52,10 +52,12 @@ const __dirname = path.dirname(__filename);
 // Serve static frontend
 app.use(express.static(path.join(__dirname, '../public')));
 
-// React Router fallback (regex avoids Express 5 bug)
-app.get(/.*/, (_, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../public')));
+  app.get(/^\/(?!api).*/, (_, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+  });
+}
 
 app.listen(port, () => {
   console.log(`✅ Server running on http://localhost:${port}`);
