@@ -25,7 +25,7 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
   const [showScroll, setShowScroll] = useState(false);
   const [photoAlbum, setPhotoAlbum] = useState<PhotoItem[]>([]);
   const [shuffled, setShuffled] = useState<PhotoItem[]>([]);
-  const [lastIndex, setLastIndex] = useState(0);
+  const [, setLastIndex] = useState(0);
 
   // Shuffle helper
   const shufflePhotos = (arr: PhotoItem[]): PhotoItem[] => {
