@@ -5,13 +5,14 @@ function Packages() {
     <div className="page packages">
       <div className="packages-container">
         <h2 className="pink">SUSIE JETTA MAKE UP AND PHOTOGRAPHY</h2>
-        <p>
-          I am here to style you and pose you in a way that is most flattering to you, I am here to
-          effortlessly capture you, and possibly I am here to make you ugly laugh. <i>Most</i> of my
-          clients have never {'('}willingly{')'} stepped in front of a camera, and don&apos;t
-          realize how photogenic they can be. I take extreme pride in being the first person to
-          capture the pure potential most people don&apos;t realize they have. Give me the posed and
-          form-perfect, give me the raw and relatable, and anything and all in between.
+        <p style={{ textIndent: '2em' }}>
+          &nbsp;&nbsp;&nbsp;&nbsp;I am here to style you and pose you in a way that is most
+          flattering to you, I am here to effortlessly capture you, and possibly I am here to make
+          you ugly laugh. <i>Most</i> of my clients have never {'('}willingly{')'} stepped in front
+          of a camera, and don&apos;t realize how photogenic they can be. I take extreme pride in
+          being the first person to capture the pure potential most people don&apos;t realize they
+          have. Give me the posed and form-perfect, give me the raw and relatable, and anything and
+          all in between.
         </p>
         <div className="flower-break">
           <span className="pink">✿ </span>
@@ -45,7 +46,7 @@ function Packages() {
         <h3>30 Minute Session</h3>
         <ul className="package-list">
           <li>
-            <span className="pink">✿ </span>$350
+            <span className="pink">✿ </span>$400
           </li>
           <li>
             <span className="pink">✿ </span>White backdrop at The Denn Boca
@@ -67,7 +68,7 @@ function Packages() {
         <h3>1 Hour Session</h3>
         <ul className="package-list">
           <li>
-            <span className="pink">✿ </span>$500
+            <span className="pink">✿ </span>$550
           </li>
           <li>
             <span className="pink">✿ </span>White backdrop at The Denn Boca or 1 location of choice
@@ -119,7 +120,7 @@ function Packages() {
             <i>
               package{'('}s{')'}
             </i>{' '}
-            you&pos;re interested in, and <i>dates/times</i> you are available to
+            you&apos;re interested in, and <i>dates/times</i> you are available to
             susiejetta@gmail.com.
           </li>
         </ul>

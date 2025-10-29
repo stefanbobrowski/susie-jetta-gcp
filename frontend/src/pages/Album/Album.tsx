@@ -122,9 +122,6 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
         <div className="denn-boca">
           <h2>The Denn Boca Photo Studio</h2>
           <p>4160 NW 1st Ave, Boca Raton, FL, 33431, Unit 16</p>
-          <a href="https://thedennboca.booksy.com" target="_blank" rel="noreferrer">
-            Click here to book
-          </a>
         </div>
       )}
 
