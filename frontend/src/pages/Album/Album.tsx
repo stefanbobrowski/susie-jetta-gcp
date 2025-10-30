@@ -138,7 +138,7 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
             <img src={logo} alt="Susie Jetta" />
           </div>
         }
-        loader={<p>Loading...</p>}
+        loader={<div className="spinner"></div>}
       >
         <div className="photo-album col-2">
           {photoCols.map((photoCol, i) => (
