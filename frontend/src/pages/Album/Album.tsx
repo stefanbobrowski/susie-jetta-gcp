@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import TrackVisibility from 'react-on-screen';
 
@@ -118,8 +119,29 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
     }
   }, [shuffled, fetchPhotos, dataSize]);
 
+  const albumTitles: Record<string, string> = {
+    I: 'Portfolio | Susie Jetta Photography',
+    II: 'Album II | Susie Jetta Photography',
+    III: 'Studio Album | Susie Jetta at Denn Boca Photo Studio',
+  };
+  const albumDescriptions: Record<string, string> = {
+    I: 'Browse the photography portfolio of Susie Jetta - lifestyle, portrait, and studio photography in Delray Beach, FL.',
+    II: 'Album II - additional photography work by Susie Jetta, Delray Beach, FL.',
+    III: 'Studio photography by Susie Jetta at The Denn Boca Photo Studio, 4160 NW 1st Ave, Boca Raton, FL.',
+  };
+  const albumCanonicals: Record<string, string> = {
+    I: 'https://susie-jetta.com/',
+    II: 'https://susie-jetta.com/II',
+    III: 'https://susie-jetta.com/III',
+  };
+
   return (
     <div className="page album">
+      <Helmet>
+        <title>{albumTitles[albumName] ?? 'Susie Jetta Photography'}</title>
+        <meta name="description" content={albumDescriptions[albumName] ?? ''} />
+        <link rel="canonical" href={albumCanonicals[albumName] ?? 'https://susie-jetta.com/'} />
+      </Helmet>
       {errorMsg && <p>{errorMsg}</p>}
       {albumName === 'III' && (
         <div className="denn-boca">

@@ -1,8 +1,17 @@
+import { Helmet } from 'react-helmet-async';
 import './Packages.scss';
 
 function Packages() {
   return (
     <div className="page packages">
+      <Helmet>
+        <title>Photography Packages | Susie Jetta</title>
+        <meta
+          name="description"
+          content="View Susie Jetta's photography and make up packages including event, portrait, studio, and more. Based in Delray Beach, FL."
+        />
+        <link rel="canonical" href="https://susie-jetta.com/packages" />
+      </Helmet>
       <div className="packages-container">
         <h2 className="pink">SUSIE JETTA MAKE UP AND PHOTOGRAPHY</h2>
         <p style={{ textIndent: '2em' }}>

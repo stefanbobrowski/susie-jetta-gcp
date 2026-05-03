@@ -1,4 +1,3 @@
-// src/server.ts
 import express from 'express';
 import cors from 'cors';
 import { Storage } from '@google-cloud/storage';
@@ -9,12 +8,12 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 // Middleware
-// Redirect www to non-www
+// Redirect www to non-www (always HTTPS — GCP terminates TLS at the load balancer)
 app.use((req, res, next) => {
   const host = req.get('host') || '';
   if (host.startsWith('www.')) {
     const newHost = host.slice(4);
-    return res.redirect(301, `${req.protocol}://${newHost}${req.originalUrl}`);
+    return res.redirect(301, `https://${newHost}${req.originalUrl}`);
   }
   next();
 });

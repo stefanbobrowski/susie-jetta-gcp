@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import dennBoca from '../../assets/dennboca.png';
 import logo from '../../assets/logo.png';
 import './About.scss';
@@ -5,6 +6,14 @@ import './About.scss';
 const About: React.FC = () => {
   return (
     <div className="page about">
+      <Helmet>
+        <title>About Susie Jetta | Make Up &amp; Photography</title>
+        <meta
+          name="description"
+          content="Learn about Susie Jetta Geisen, a Delray Beach, FL lifestyle, portrait, studio, family, event, and wedding photographer."
+        />
+        <link rel="canonical" href="https://susie-jetta.com/about" />
+      </Helmet>
       <div className="about-container">
         <h2>Susie Jetta Make Up and Photography</h2>
         <p>

@@ -15,6 +15,7 @@
   "dependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-helmet-async": "^3.0.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-on-screen": "^2.1.1",
     "react-router-dom": "^7.12.0"

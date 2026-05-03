@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import logo from '../../assets/logo.png';
 import instagram from '../../assets/icons/instagram.svg';
 import youTube from '../../assets/icons/youtube.svg';
@@ -7,6 +8,14 @@ import './Contact.scss';
 function Contact() {
   return (
     <div className="page contact">
+      <Helmet>
+        <title>Contact | Susie Jetta Photography</title>
+        <meta
+          name="description"
+          content="Get in touch with Susie Jetta. Email, Instagram, and YouTube contact information for photography and make up inquiries."
+        />
+        <link rel="canonical" href="https://susie-jetta.com/contact" />
+      </Helmet>
       <div className="logo-container">
         <img src={logo} alt="Susie Jetta" />
       </div>
