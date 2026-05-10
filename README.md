@@ -50,7 +50,7 @@ GET /api/photos?album=I
 
 ## License
 
-© 2026 Susie Jetta. Built by Stefan Bobrowski. All rights reserved.
+See [LICENSE](LICENSE) file for details. All rights reserved.
 
 ## Author
 
