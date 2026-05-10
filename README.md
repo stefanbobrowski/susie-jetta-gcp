@@ -1,4 +1,4 @@
-# Susie Jetta ✨
+# ✨ Susie Jetta Makeup and Photography 📸
 
 ```
         o#######o
@@ -44,6 +44,18 @@ GET /api/photos?album=I
 
 ---
 
-## 📝 License
+## Repo
 
-© 2026 Susie Jetta. All rights reserved.
+[github.com/stefanbobrowski/susie-jetta-gcp](github.com/stefanbobrowski/susie-jetta-gcp)
+
+## License
+
+© 2026 Susie Jetta. Built by Stefan Bobrowski. All rights reserved.
+
+## Author
+
+**Stefan Bobrowski**
+
+Github: [https://github.com/stefanbobrowski](https://github.com/stefanbobrowski)  
+Portfolio: [https://stefanbobrowski.com](https://stefanbobrowski.com)  
+Email: stefanbobrowski1@gmail.com
