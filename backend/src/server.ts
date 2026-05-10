@@ -61,8 +61,9 @@ const __dirname = path.dirname(__filename);
 // Serve static frontend
 app.use(express.static(path.join(__dirname, '../public')));
 
-// SPA fallback - serve index.html for all non-API routes
-app.get(/^\/(?!api).*/, (_, res) => {
+// SPA fallback - serve index.html only for routes without file extensions
+// This allows static assets and modules to be served correctly
+app.get(/^\/(?!api)[^.]*$/, (_, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
