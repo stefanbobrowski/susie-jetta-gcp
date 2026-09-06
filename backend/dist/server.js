@@ -1,19 +1,28 @@
-// src/server.ts
 import express from 'express';
 import cors from 'cors';
 import { Storage } from '@google-cloud/storage';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 const app = express();
 const port = process.env.PORT || 8080;
 // Middleware
+// Redirect www to non-www (always HTTPS — GCP terminates TLS at the load balancer)
+app.use((req, res, next) => {
+    const host = req.get('host') || '';
+    if (host.startsWith('www.')) {
+        const newHost = host.slice(4);
+        return res.redirect(301, `https://${newHost}${req.originalUrl}`);
+    }
+    next();
+});
 app.use(cors());
 app.use(express.json());
 // GCP Storage setup
 const storage = new Storage();
 const bucketName = 'susie-jetta-photos';
 // List photos by album
-app.get('/photos', async (req, res) => {
+app.get('/api/photos', async (req, res) => {
     try {
         const album = req.query.album;
         if (!album) {
@@ -40,12 +49,21 @@ app.get('/photos', async (req, res) => {
 // These two lines make __dirname work in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// Serve static frontend
-app.use(express.static(path.join(__dirname, '../public')));
-// React Router fallback (regex avoids Express 5 bug)
-app.get(/.*/, (_, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+const publicDir = path.join(__dirname, '../public');
+// Serve static frontend only when the built client exists locally or in deployment.
+if (fs.existsSync(publicDir)) {
+    app.use(express.static(publicDir));
+    // SPA fallback - serve index.html only for routes without file extensions
+    // This allows static assets and modules to be served correctly
+    app.get(/^\/(?!api)[^.]*$/, (_, res) => {
+        res.sendFile(path.join(publicDir, 'index.html'));
+    });
+}
+else {
+    app.get(/^\/(?!api)[^.]*$/, (_, res) => {
+        res.status(404).json({ error: 'Frontend build not found' });
+    });
+}
 app.listen(port, () => {
     console.log(`✅ Server running on http://localhost:${port}`);
 });

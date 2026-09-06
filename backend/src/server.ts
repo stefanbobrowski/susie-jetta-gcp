@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { Storage } from '@google-cloud/storage';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -57,15 +58,22 @@ app.get('/api/photos', async (req, res) => {
 // These two lines make __dirname work in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const publicDir = path.join(__dirname, '../public');
 
-// Serve static frontend
-app.use(express.static(path.join(__dirname, '../public')));
+// Serve static frontend only when the built client exists locally or in deployment.
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir));
 
-// SPA fallback - serve index.html only for routes without file extensions
-// This allows static assets and modules to be served correctly
-app.get(/^\/(?!api)[^.]*$/, (_, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+  // SPA fallback - serve index.html only for routes without file extensions
+  // This allows static assets and modules to be served correctly
+  app.get(/^\/(?!api)[^.]*$/, (_, res) => {
+    res.sendFile(path.join(publicDir, 'index.html'));
+  });
+} else {
+  app.get(/^\/(?!api)[^.]*$/, (_, res) => {
+    res.status(404).json({ error: 'Frontend build not found' });
+  });
+}
 
 app.listen(port, () => {
   console.log(`✅ Server running on http://localhost:${port}`);

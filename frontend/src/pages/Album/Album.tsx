@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import TrackVisibility from 'react-on-screen';
 
 import Photo from '../../components/Photo/Photo';
 import chevronUp from '../../assets/icons/chevron-up.svg';
@@ -16,6 +15,10 @@ interface PhotoItem {
 interface AlbumProps {
   albumName: string;
 }
+
+const apiBaseUrl = import.meta.env.DEV
+  ? import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+  : '';
 
 const Album: React.FC<AlbumProps> = ({ albumName }) => {
   const [dataSize, setDataSize] = useState(0);
@@ -47,7 +50,13 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
 
   const fetchAlbum = useCallback(async () => {
     try {
-      const response = await fetch(`/api/photos?album=${albumName}`);
+      const response = await fetch(`${apiBaseUrl}/api/photos?album=${albumName}`);
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Photo API request failed (${response.status}): ${errorBody}`);
+      }
+
       const res = await response.json();
       setPhotoAlbum(res.photos || []);
     } catch (err: unknown) {
@@ -166,9 +175,7 @@ const Album: React.FC<AlbumProps> = ({ albumName }) => {
           {photoCols.map((photoCol, i) => (
             <div className="photo-column" key={i}>
               {photoCol.map((photo, j) => (
-                <TrackVisibility partialVisibility once key={j}>
-                  <Photo photo={photo} />
-                </TrackVisibility>
+                <Photo photo={photo} key={j} />
               ))}
             </div>
           ))}

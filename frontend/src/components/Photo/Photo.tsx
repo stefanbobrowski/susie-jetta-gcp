@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import TrackVisibility from 'react-on-screen';
 import './Photo.scss';
 
 interface PhotoProps {
@@ -10,16 +9,9 @@ const Photo: React.FC<PhotoProps> = ({ photo }) => {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <TrackVisibility partialVisibility once>
-      {({ isVisible }) => {
-        const active = loaded && isVisible;
-        return (
-          <div className={`photo ${loaded ? 'loaded' : ''} ${active ? 'visible' : ''}`}>
-            <img src={photo.url} alt={photo.name} loading="lazy" onLoad={() => setLoaded(true)} />
-          </div>
-        );
-      }}
-    </TrackVisibility>
+    <div className={`photo ${loaded ? 'loaded' : ''}`}>
+      <img src={photo.url} alt={photo.name} loading="lazy" onLoad={() => setLoaded(true)} />
+    </div>
   );
 };
 
