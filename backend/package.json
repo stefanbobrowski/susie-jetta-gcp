@@ -9,9 +9,12 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
-    "@google-cloud/storage": "^7.19.0",
+    "@google-cloud/storage": "^8.0.1",
     "cors": "^2.8.5",
     "express": "^5.2.0"
+  },
+  "overrides": {
+    "gaxios": "^8.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
