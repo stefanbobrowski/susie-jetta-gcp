@@ -13,9 +13,6 @@
     "cors": "^2.8.5",
     "express": "^5.2.0"
   },
-  "overrides": {
-    "gaxios": "^8.0.0"
-  },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.4",
